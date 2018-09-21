@@ -1,0 +1,44 @@
+aws_s3_bucket:
+-
+  title: description_checker
+  description: simple existance checker
+  mode: existance
+  key: description
+-
+  title: private_checker
+  description: simple value checker
+  mode: value
+  key: acl
+  value: private
+-
+  title: bucket_checker
+  description: simple value regex checker
+  mode: value
+  key: bucket
+  value: .*-tf-review-bucket.*
+-
+  title: tag_checker
+  description: nested value checker
+  mode: nested
+  key: tags
+  nest:
+    -
+      title: name_checker
+      description: nested value checker
+      mode: value
+      key: Name
+      value: .*-tf-review-bucket.*
+    -
+      title: env_checker
+      description: nested value checker
+      mode: value
+      key: Env
+      value: (dev|stg|prd)
+-
+  title: if_checker
+  mode: if
+  key: logging
+  nest:
+    title: name_checker
+    mode: existance
+    key: lifecycle_rule
