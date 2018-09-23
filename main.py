@@ -84,7 +84,7 @@ def review_cycle(resource_dict, review_dict):
 
 
 if __name__ == '__main__':
-    file_path_list = glob.glob("./terraform/*", recursive=True)
+    file_path_list = glob.glob("./terraform/**.tf", recursive=True)
     print(file_path_list)
     for file_path in file_path_list:
         if not re.match(".*.tf\Z", file_path):
