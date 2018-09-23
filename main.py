@@ -90,7 +90,6 @@ if __name__ == '__main__':
         if re.match('.*.tf\Z', file_path):
             file_path_list.append(file_path)
     for file_path in file_path_list:
-        print(file_path)
         try:
             with codecs.open(file_path, 'r', 'utf-8') as fp:
                 obj = hcl.load(fp)
@@ -98,10 +97,9 @@ if __name__ == '__main__':
                 continue
             obj = obj["resource"]
 
-            with codecs.open('./review_book/s3.yaml', 'r', 'utf-8') as fp2:
-                review_book = yaml.load(fp2)
-
             for resource_name in obj.keys():
+                with codecs.open('./review_book/' + resource_name.split("_")[1] + '.yaml', 'r', 'utf-8') as fp2:
+                    review_book = yaml.load(fp2)
                 for obj_name in obj[resource_name].keys():
                     result_global += "\n==========================================================\n"
                     result_global += "RESOURCE " + pycolor.UNDERLINE
