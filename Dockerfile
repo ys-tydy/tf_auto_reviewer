@@ -22,4 +22,4 @@ COPY . .
 CMD ["python","main.py"]
 
 # docker build ./ -t tf_review
-# docker run -v `pwd`/terraform:/tmp/terraform tf_review
+# docker run -v `pwd`/${TF_ROOT_PATH}:/tmp/terraform tf_review

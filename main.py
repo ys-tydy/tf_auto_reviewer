@@ -90,7 +90,10 @@ if __name__ == '__main__':
         if not re.match(".*.tf", file_path):
             continue
         with codecs.open(file_path, 'r', 'utf-8') as fp:
-            obj = hcl.load(fp)["resource"]
+            obj = hcl.load(fp)
+        if not "resource" in obj:
+            continue
+        obj = obj["resource"]
 
         with codecs.open('./review_book/s3.yaml', 'r', 'utf-8') as fp2:
             review_book = yaml.load(fp2)
