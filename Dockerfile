@@ -18,9 +18,8 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
-COPY ../* ./terraform/
 
 CMD ["python","main.py"]
 
 # docker build ./ -t tf_review
-# docker run tf_review
+# docker run -v `pwd`/terraform:/tmp/terraform tf_review
