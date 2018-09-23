@@ -84,7 +84,11 @@ def review_cycle(resource_dict, review_dict):
 
 
 if __name__ == '__main__':
-    file_path_list = glob.glob("./terraform/**.tf", recursive=True)
+    file_path_list = glob.glob("./terraform/**", recursive=True)
+    for file_path in file_path_list:
+        if not re.match(".\*.tf", file_path):
+            file_path_list.remove(file_path)
+    print(file_path_list)
     for file_path in file_path_list:
         with codecs.open(file_path, 'r', 'utf-8') as fp:
             obj = hcl.load(fp)
