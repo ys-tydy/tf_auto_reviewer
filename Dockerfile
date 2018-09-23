@@ -18,7 +18,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
-COPY ${TF_ROOT_PATH}/* ./terraform/
+COPY ../* ./terraform/
 
 CMD ["python","main.py"]
 
