@@ -84,31 +84,36 @@ def review_cycle(resource_dict, review_dict):
 
 
 if __name__ == '__main__':
-    file_path_list = glob.glob("./terraform/**", recursive=True)
+    all_file_path_list = glob.glob("./terraform/**", recursive=True)
+    file_path_list = []
     for file_path in file_path_list:
-        if not re.match('.*.tf\Z', file_path):
-            continue
+        if re.match('.*.tf\Z', file_path):
+            file_path_list.append(file_path)
+    for file_path in file_path_list:
         print(file_path)
-        with codecs.open(file_path, 'r', 'utf-8') as fp:
-            obj = hcl.load(fp)
-        if not "resource" in obj:
-            continue
-        obj = obj["resource"]
+        try:
+            with codecs.open(file_path, 'r', 'utf-8') as fp:
+                obj = hcl.load(fp)
+            if not "resource" in obj:
+                continue
+            obj = obj["resource"]
 
-        with codecs.open('./review_book/s3.yaml', 'r', 'utf-8') as fp2:
-            review_book = yaml.load(fp2)
+            with codecs.open('./review_book/s3.yaml', 'r', 'utf-8') as fp2:
+                review_book = yaml.load(fp2)
 
-        for resource_name in obj.keys():
-            for obj_name in obj[resource_name].keys():
-                result_global += "\n==========================================================\n"
-                result_global += "RESOURCE " + pycolor.UNDERLINE
-                result_global += resource_name.upper() + "." + obj_name.upper() + "\n"
-                result_global += pycolor.END
-                result_global += "==========================================================\n"
-                if not resource_name in review_book:
-                    continue
-                for review_dict in review_book[resource_name]:
-                    flg, res = review_cycle(obj[resource_name][obj_name], review_dict)
+            for resource_name in obj.keys():
+                for obj_name in obj[resource_name].keys():
+                    result_global += "\n==========================================================\n"
+                    result_global += "RESOURCE " + pycolor.UNDERLINE
+                    result_global += resource_name.upper() + "." + obj_name.upper() + "\n"
+                    result_global += pycolor.END
+                    result_global += "==========================================================\n"
+                    if not resource_name in review_book:
+                        continue
+                    for review_dict in review_book[resource_name]:
+                        flg, res = review_cycle(obj[resource_name][obj_name], review_dict)
+        except Exception as e:
+            print(str(e))
     result_global += "\n\n==========================================================\n"
     result_global += "PASS NUM : " + str(pass_num_global) + "\n"
     result_global += "ALERT NUM : " + str(alert_num_global) + "\n"
