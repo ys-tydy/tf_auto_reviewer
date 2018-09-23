@@ -99,14 +99,14 @@ if __name__ == '__main__':
             review_book = yaml.load(fp2)
 
         for resource_name in obj.keys():
-            if not resource_name in obj:
-                continue
             for obj_name in obj[resource_name].keys():
                 result_global += "\n==========================================================\n"
                 result_global += "RESOURCE " + pycolor.UNDERLINE
                 result_global += resource_name.upper() + "." + obj_name.upper() + "\n"
                 result_global += pycolor.END
                 result_global += "==========================================================\n"
+                if not resource_name in review_book:
+                    continue
                 for review_dict in review_book[resource_name]:
                     flg, res = review_cycle(obj[resource_name][obj_name], review_dict)
     result_global += "\n\n==========================================================\n"
