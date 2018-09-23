@@ -99,6 +99,8 @@ if __name__ == '__main__':
             review_book = yaml.load(fp2)
 
         for resource_name in obj.keys():
+            if not resource_name in obj:
+                continue
             for obj_name in obj[resource_name].keys():
                 result_global += "\n==========================================================\n"
                 result_global += "RESOURCE " + pycolor.UNDERLINE
